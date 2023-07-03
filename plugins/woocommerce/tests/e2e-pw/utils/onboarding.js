@@ -30,13 +30,21 @@ const onboarding = {
 		await page.check( '#inspector-checkbox-control-0' );
 		// Click continue button
 		await page.click( 'button >> text=Continue' );
-		// Usage tracking dialog
-		await page.textContent( '.components-modal__header-heading' );
-		await page.click( 'button >> text=No thanks' );
-		await page.waitForLoadState( 'networkidle' ); // not autowaiting for form submission
+		// handle tracking modal
+		const noTanksButton = page.getByRole( 'button', {
+			name: 'No thanks',
+		} );
+		if ( await noTanksButton.isVisible() ) {
+			await noTanksButton.click();
+			await page.waitForLoadState( 'networkidle' );
+		}
 	},
 
-	completeIndustrySection: async ( page, industries, expectedNumberOfIndustries ) => {
+	completeIndustrySection: async (
+		page,
+		industries,
+		expectedNumberOfIndustries
+	) => {
 		await page.goto( INDUSTRY_DETAILS_URL );
 		const pageHeading = await page.textContent(
 			'div.woocommerce-profile-wizard__step-header > h2'
