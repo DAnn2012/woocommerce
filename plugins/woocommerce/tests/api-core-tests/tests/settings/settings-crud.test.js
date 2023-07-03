@@ -2,6 +2,7 @@ const {
 	test,
 	expect
 } = require('@playwright/test');
+const { ENABLE_TRACKING } = process.env;
 const exp = require('constants');
 const {
 	keys
@@ -1667,7 +1668,7 @@ test.describe('Settings API tests: CRUD', () => {
 						"type": "checkbox",
 						"default": "no",
 						"tip": "To opt out, leave this box unticked. Your store remains untracked, and no data will be collected. Read about what usage data is tracked at: <a href=\"https://woocommerce.com/usage-tracking\" target=\"_blank\">WooCommerce.com Usage Tracking Documentation</a>.",
-						"value": "no",
+						"value": ENABLE_TRACKING ? "yes" : "no",
 					})
 				]));
 			expect(responseJSON).toEqual(
